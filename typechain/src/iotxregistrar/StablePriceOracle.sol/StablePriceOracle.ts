@@ -7,6 +7,8 @@ import type {
   BigNumberish,
   BytesLike,
   CallOverrides,
+  ContractTransaction,
+  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -39,6 +41,7 @@ export declare namespace IPriceOracle {
 
 export interface StablePriceOracleInterface extends utils.Interface {
   functions: {
+    "owner()": FunctionFragment;
     "premium(string,uint256,uint256)": FunctionFragment;
     "price(string,uint256,uint256)": FunctionFragment;
     "price1Letter()": FunctionFragment;
@@ -46,12 +49,20 @@ export interface StablePriceOracleInterface extends utils.Interface {
     "price3Letter()": FunctionFragment;
     "price4Letter()": FunctionFragment;
     "price5Letter()": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "setPrice1Letter(uint256)": FunctionFragment;
+    "setPrice2Letter(uint256)": FunctionFragment;
+    "setPrice3Letter(uint256)": FunctionFragment;
+    "setPrice4Letter(uint256)": FunctionFragment;
+    "setPrice5Letter(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
     "usdOracle()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "owner"
       | "premium"
       | "price"
       | "price1Letter"
@@ -59,10 +70,18 @@ export interface StablePriceOracleInterface extends utils.Interface {
       | "price3Letter"
       | "price4Letter"
       | "price5Letter"
+      | "renounceOwnership"
+      | "setPrice1Letter"
+      | "setPrice2Letter"
+      | "setPrice3Letter"
+      | "setPrice4Letter"
+      | "setPrice5Letter"
       | "supportsInterface"
+      | "transferOwnership"
       | "usdOracle"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "premium",
     values: [
@@ -100,11 +119,40 @@ export interface StablePriceOracleInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPrice1Letter",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPrice2Letter",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPrice3Letter",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPrice4Letter",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPrice5Letter",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "usdOracle", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "premium", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
@@ -128,17 +176,59 @@ export interface StablePriceOracleInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPrice1Letter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPrice2Letter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPrice3Letter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPrice4Letter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPrice5Letter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "usdOracle", data: BytesLike): Result;
 
   events: {
+    "OwnershipTransferred(address,address)": EventFragment;
     "RentPriceChanged(uint256[])": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RentPriceChanged"): EventFragment;
 }
+
+export interface OwnershipTransferredEventObject {
+  previousOwner: string;
+  newOwner: string;
+}
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferredEventObject
+>;
+
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface RentPriceChangedEventObject {
   prices: BigNumber[];
@@ -178,6 +268,8 @@ export interface StablePriceOracle extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     premium(
       name: PromiseOrValue<string>,
       expires: PromiseOrValue<BigNumberish>,
@@ -202,13 +294,49 @@ export interface StablePriceOracle extends BaseContract {
 
     price5Letter(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPrice1Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPrice2Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPrice3Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPrice4Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPrice5Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     supportsInterface(
       interfaceID: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     usdOracle(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  owner(overrides?: CallOverrides): Promise<string>;
 
   premium(
     name: PromiseOrValue<string>,
@@ -234,14 +362,50 @@ export interface StablePriceOracle extends BaseContract {
 
   price5Letter(overrides?: CallOverrides): Promise<BigNumber>;
 
+  renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPrice1Letter(
+    _price: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPrice2Letter(
+    _price: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPrice3Letter(
+    _price: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPrice4Letter(
+    _price: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPrice5Letter(
+    _price: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceID: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  transferOwnership(
+    newOwner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   usdOracle(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    owner(overrides?: CallOverrides): Promise<string>;
+
     premium(
       name: PromiseOrValue<string>,
       expires: PromiseOrValue<BigNumberish>,
@@ -266,20 +430,63 @@ export interface StablePriceOracle extends BaseContract {
 
     price5Letter(overrides?: CallOverrides): Promise<BigNumber>;
 
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setPrice1Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPrice2Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPrice3Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPrice4Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPrice5Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     supportsInterface(
       interfaceID: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     usdOracle(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+
     "RentPriceChanged(uint256[])"(prices?: null): RentPriceChangedEventFilter;
     RentPriceChanged(prices?: null): RentPriceChangedEventFilter;
   };
 
   estimateGas: {
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     premium(
       name: PromiseOrValue<string>,
       expires: PromiseOrValue<BigNumberish>,
@@ -304,15 +511,51 @@ export interface StablePriceOracle extends BaseContract {
 
     price5Letter(overrides?: CallOverrides): Promise<BigNumber>;
 
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPrice1Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPrice2Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPrice3Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPrice4Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPrice5Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     supportsInterface(
       interfaceID: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     usdOracle(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     premium(
       name: PromiseOrValue<string>,
       expires: PromiseOrValue<BigNumberish>,
@@ -337,9 +580,43 @@ export interface StablePriceOracle extends BaseContract {
 
     price5Letter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPrice1Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPrice2Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPrice3Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPrice4Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPrice5Letter(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     supportsInterface(
       interfaceID: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     usdOracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
