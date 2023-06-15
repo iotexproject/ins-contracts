@@ -1,14 +1,18 @@
 import { ethers } from 'hardhat'
 import { namehash } from 'ethers/lib/utils'
 
-import { INSRegistry, PublicResolver } from "../typechain"
+import { INSRegistry, PublicResolver, NameWrapper } from "../typechain"
 
 async function main() {
     const registry = (await ethers.getContract("INSRegistry")) as INSRegistry
+    const nameWrapper = (await ethers.getContract("NameWrapper")) as NameWrapper
 
     const label = 'hello'
     const name = label + '.io'
     const node = namehash(name)
+
+    const nameOwner = await nameWrapper.ownerOf(node)
+    console.log(`${name} owner is ${nameOwner}`)
 
     let resolverAddr = await registry.resolver(node)
     let resolverFactory = await ethers.getContractFactory("PublicResolver")
