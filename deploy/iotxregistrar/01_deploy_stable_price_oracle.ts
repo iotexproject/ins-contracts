@@ -14,7 +14,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const chainId = network.config.chainId!
   // @ts-ignore
-  const oracleAddress: string = AGGREGATOR[String(chainId)]
+  let oracleAddress: string = AGGREGATOR[String(chainId)]
+
+  if (network.name === "dev") {
+    const dummyOracle = await deploy('DummyOracle', {
+      from: deployer,
+      args: [10000],
+      log: true,
+    })
+    oracleAddress = dummyOracle.address
+  }
+
   
   const aggregator = await deploy('AggregatorProxy', {
     from: deployer,

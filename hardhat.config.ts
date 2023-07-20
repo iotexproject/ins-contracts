@@ -44,6 +44,11 @@ const config: HardhatUserConfig = {
             tags: ['use_root'],
             chainId: 4690,
             accounts: real_accounts,
+        },
+        dev: {
+            url: "http://127.0.0.1:8545",
+            tags: ['use_root'],
+            accounts: real_accounts,
         }
     },
     namedAccounts: {
