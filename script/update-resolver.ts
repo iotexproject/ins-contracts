@@ -12,12 +12,14 @@ async function main() {
     const label = 'hello'
     const name = label + '.io'
     const node = namehash(name)
+    console.log(`Update resovler info for ${name}...`)
     let tx = await resolver.connect(recipient)['setAddr(bytes32,address)'](node, recipient.address)
     await tx.wait()
 
     tx = await reverseRegistrar.connect(recipient)
         .setNameForAddr(recipient.address, recipient.address, resolver.address, name)
     await tx.wait()
+    console.log(`Successfule update resovler info for ${name}`)
 }
 
 main()

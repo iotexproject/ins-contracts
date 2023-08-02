@@ -14,6 +14,9 @@ async function main() {
     const nameOwner = await nameWrapper.ownerOf(node)
     console.log(`${name} owner is ${nameOwner}`)
 
+    const registryOwner = await registry.owner(node)
+    console.log(`${name} registry owner is ${registryOwner}`)
+
     let resolverAddr = await registry.resolver(node)
     let resolverFactory = await ethers.getContractFactory("PublicResolver")
     let resolver = resolverFactory.attach(resolverAddr) as PublicResolver
