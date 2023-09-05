@@ -16,6 +16,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [metadataUrl],
     log: true,
   })
+
+  await deploy('OwnedStaticMetadataService', {
+    from: deployer,
+    args: ['https://ins.iotex.io/token/'],
+    log: true,
+  })
 }
 
 func.id = 'metadata'

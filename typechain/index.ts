@@ -164,6 +164,8 @@ export type { UpgradedNameWrapperMock } from "./src/wrapper/mocks/UpgradedNameWr
 export { UpgradedNameWrapperMock__factory } from "./factories/src/wrapper/mocks/UpgradedNameWrapperMock__factory";
 export type { NameWrapper } from "./src/wrapper/NameWrapper";
 export { NameWrapper__factory } from "./factories/src/wrapper/NameWrapper__factory";
+export type { OwnedStaticMetadataService } from "./src/wrapper/OwnedStaticMetadataService";
+export { OwnedStaticMetadataService__factory } from "./factories/src/wrapper/OwnedStaticMetadataService__factory";
 export type { StaticMetadataService } from "./src/wrapper/StaticMetadataService";
 export { StaticMetadataService__factory } from "./factories/src/wrapper/StaticMetadataService__factory";
 export type { NameGriefer } from "./src/wrapper/test/NameGriefer";

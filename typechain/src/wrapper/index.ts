@@ -11,4 +11,5 @@ export type { IMetadataService } from "./IMetadataService";
 export type { INameWrapper } from "./INameWrapper";
 export type { INameWrapperUpgrade } from "./INameWrapperUpgrade";
 export type { NameWrapper } from "./NameWrapper";
+export type { OwnedStaticMetadataService } from "./OwnedStaticMetadataService";
 export type { StaticMetadataService } from "./StaticMetadataService";
